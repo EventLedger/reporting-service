@@ -1,0 +1,27 @@
+{
+  "name": "reporting-service",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "aws-lambda": "^1.0.7",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.4",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.144",
+    "@types/node": "^22.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\""
+  }
+}

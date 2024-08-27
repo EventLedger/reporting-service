@@ -1,0 +1,43 @@
+org: hhassan
+app: orbital-serverless
+service: reporting-service
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  # region: us-east-1
+  environment:
+    MONGODB_URI: "mongodb+srv://root:orbital-password@orbital-test-0.5brqv.mongodb.net/?retryWrites=true&w=majority&appName=orbital-test-0"
+    # MONGODB_URI: ${ssm:/accounts-service/MONGODB_URI}
+    # EVENT_BUS_NAME: ${ssm:/my-service/EVENT_BUS_NAME~true}
+
+functions:
+  transactionEventListener:
+    handler: src/handlers/transactionEventListener.handler
+    events:
+      - eventBridge:
+          eventBus: default
+          pattern:
+            source:
+              - accounts-service
+            detail-type:
+              - TransactionCreated
+
+  getMonthlyStatements:
+    handler: src/handlers/getMonthlyStatements.handler
+    events:
+      - http:
+          path: statements/{accountId}/{year}/{month}
+          method: get
+
+custom:
+  stage: ${opt:stage, 'dev'}
+
+package:
+  exclude:
+    - node_modules/**
+    - src/tests/**
+    - dist/**
+
+plugins:
+  - serverless-offline

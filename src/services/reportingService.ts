@@ -1,0 +1,65 @@
+import { Model } from 'mongoose'
+
+import { IStatement } from '../models/statement'
+import { TransactionEvent } from '../events/transactionEvent'
+import { getMonthYearFromDate } from '../utils/dateUtils'
+
+export class ReportingService {
+  private statementModel: Model<IStatement>
+
+  constructor(statementModel: Model<IStatement>) {
+    this.statementModel = statementModel
+  }
+
+  async processTransactionEvent(event: TransactionEvent): Promise<void> {
+    const { accountId, currency, amount, type, date } = event
+    const { month, year } = getMonthYearFromDate(date)
+
+    let statement = await this.statementModel
+      .findOne({ accountId, month, year })
+      .exec()
+
+    if (!statement) {
+      statement = new this.statementModel({
+        accountId,
+        month,
+        year,
+        currencies: [],
+      })
+    }
+
+    let currencyStatement = statement.currencies.find(
+      (cs) => cs.currency === currency,
+    )
+
+    if (!currencyStatement) {
+      currencyStatement = {
+        currency,
+        transactions: [],
+        openingBalance: 0,
+        closingBalance: 0,
+      }
+      statement.currencies.push(currencyStatement)
+    }
+
+    const previousClosingBalance = currencyStatement.closingBalance || 0
+
+    if (type === 'INBOUND') {
+      currencyStatement.closingBalance = previousClosingBalance + amount
+    } else if (type === 'OUTBOUND') {
+      currencyStatement.closingBalance = previousClosingBalance - amount
+    }
+
+    currencyStatement.transactions.push({ type: type, amount, date })
+
+    await statement.save()
+  }
+
+  async getMonthlyStatements(
+    accountId: string,
+    year: number,
+    month: number,
+  ): Promise<IStatement | null> {
+    return this.statementModel.findOne({ accountId, year, month }).exec()
+  }
+}
