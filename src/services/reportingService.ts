@@ -15,10 +15,7 @@ export class ReportingService {
     const { accountId, currency, amount, type, date } = event
     const { month, year } = getMonthYearFromDate(date)
 
-    let statement = await this.statementModel
-      .findOne({ accountId, month, year })
-      .exec()
-
+    let statement = await this.statementModel.findOne({ accountId, month, year }).exec()
     if (!statement) {
       statement = new this.statementModel({
         accountId,
@@ -31,7 +28,6 @@ export class ReportingService {
     let currencyStatement = statement.currencies.find(
       (cs) => cs.currency === currency,
     )
-
     if (!currencyStatement) {
       currencyStatement = {
         currency,
@@ -42,6 +38,9 @@ export class ReportingService {
       statement.currencies.push(currencyStatement)
     }
 
+    const currencyStatementIndex = statement.currencies.findIndex(
+      (cs) => cs.currency === currency,
+    )
     const previousClosingBalance = currencyStatement.closingBalance || 0
 
     if (type === 'INBOUND') {
@@ -50,7 +49,9 @@ export class ReportingService {
       currencyStatement.closingBalance = previousClosingBalance - amount
     }
 
-    currencyStatement.transactions.push({ type: type, amount, date })
+    currencyStatement.transactions.push({ type, amount, date })
+
+    statement.currencies[currencyStatementIndex] = currencyStatement
 
     await statement.save()
   }

@@ -17,9 +17,14 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",
+    "serverless-offline": "^13.7.0",
     "typescript": "^5.5.4"
   },
   "scripts": {
+    "clean": "rm -rf dist build",
+    "build": "npm run clean && tsc",
+    "deploy": "serverless deploy -s production -r eu-north-1 -v",
+    "offline": "npm run build && serverless offline",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\""

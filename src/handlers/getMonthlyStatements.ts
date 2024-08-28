@@ -14,7 +14,7 @@ export const getMonthlyStatementsHandler = async (
   const accountId = event.pathParameters?.accountId
   const year = parseInt(event.queryStringParameters?.year || '', 10)
   const month = parseInt(event.queryStringParameters?.month || '', 10)
-
+  
   const statement = await reportingService.getMonthlyStatements(
     accountId!,
     year,
