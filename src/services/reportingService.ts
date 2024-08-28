@@ -3,6 +3,7 @@ import { Model } from 'mongoose'
 import { IStatement } from '../models/statement'
 import { TransactionEvent } from '../events/transactionEvent'
 import { getMonthYearFromDate } from '../utils/dateUtils'
+import { NotFoundException } from '../utils/exceptions'
 
 export class ReportingService {
   private statementModel: Model<IStatement>
@@ -60,7 +61,13 @@ export class ReportingService {
     accountId: string,
     year: number,
     month: number,
-  ): Promise<IStatement | null> {
-    return this.statementModel.findOne({ accountId, year, month }).exec()
+  ): Promise<IStatement> {    
+    const statement = await this.statementModel.findOne({ accountId, year, month }).exec()
+
+    if(!statement) {
+      throw new NotFoundException('Statement not found')
+    }
+
+    return statement
   }
 }

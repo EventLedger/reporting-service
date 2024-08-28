@@ -4,30 +4,28 @@ import { Statement } from '../models/statement'
 import { connectToDatabase } from '../utils/connectToDB'
 import { ReportingService } from '../services/reportingService'
 import { withErrorHandling } from '../utils/withErrorHandling'
+import { BadRequestException } from '../utils/exceptions'
 
 export const getMonthlyStatementsHandler = async (
   event: APIGatewayProxyEvent,
 ): Promise<APIGatewayProxyResult> => {
   await connectToDatabase()
-
   const reportingService = new ReportingService(Statement)
+  
   const accountId = event.pathParameters?.accountId
   const year = parseInt(event.queryStringParameters?.year || '', 10)
   const month = parseInt(event.queryStringParameters?.month || '', 10)
   
+  if (!accountId || !year || !month) {
+    throw new BadRequestException('Missing required parameters')
+  }
+
   const statement = await reportingService.getMonthlyStatements(
-    accountId!,
+    accountId,
     year,
     month,
   )
-  if (!statement) {
-    return {
-      statusCode: 404,
-      body: JSON.stringify({
-        message: `No statement found for account ${accountId} in ${month}/${year}`,
-      }),
-    }
-  }
+
   return {
     statusCode: 200,
     body: JSON.stringify(statement),
