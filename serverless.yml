@@ -5,7 +5,7 @@ service: reporting-service
 provider:
   name: aws
   runtime: nodejs20.x
-  region: eu-north-1
+  region: ${param:AWS_REGION}
   environment:
     MONGODB_URI: ${param:MONGODB_URI}
     EVENT_BUS_NAME: ${param:EVENT_BUS_NAME}
@@ -26,7 +26,7 @@ functions:
               - ${param:EVENT_DETAIL_TYPE}
   
   getMonthlyStatements:
-    handler: dist/src/handlers/getMonthlyStatements.handler
+    handler: src/handlers/getMonthlyStatements.handler
     events:
       - http:
           path: statements/{accountId}/{year}/{month}
