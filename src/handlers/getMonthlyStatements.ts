@@ -13,8 +13,8 @@ export const getMonthlyStatementsHandler = async (
   const reportingService = new ReportingService(Statement)
   
   const accountId = event.pathParameters?.accountId
-  const year = parseInt(event.queryStringParameters?.year || '', 10)
-  const month = parseInt(event.queryStringParameters?.month || '', 10)
+  const year = parseInt(event.pathParameters?.year || '', 10)
+  const month = parseInt(event.pathParameters?.month || '', 10)
   
   if (!accountId || !year || !month) {
     throw new BadRequestException('Missing required parameters')

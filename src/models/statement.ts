@@ -1,5 +1,7 @@
 import { Schema, Document, model, Model } from 'mongoose'
 
+import { TransactionType } from '../events/events'
+
 export interface ICurrencyStatement {
   currency: string
   transactions: {
@@ -22,7 +24,11 @@ const CurrencyStatementSchema = new Schema<ICurrencyStatement>({
   currency: { type: String, required: true },
   transactions: [
     {
-      type: { type: String, enum: ['INBOUND', 'OUTBOUND'], required: true },
+      type: {
+        type: String,
+        enum: [TransactionType.INBOUND, TransactionType.OUTBOUND],
+        required: true,
+      },
       amount: { type: Number, required: true },
       date: { type: Date, required: true },
     },

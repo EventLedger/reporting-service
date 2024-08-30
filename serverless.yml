@@ -23,9 +23,9 @@ functions:
               - 'accounts-service'
             detail-type:
               - 'TransactionCreated'
-          # retryPolicy:
-          #   maximumRetryAttempts: 5
-
+              - 'AccountCreated'
+              - 'AccountUpdated'
+  
   getMonthlyStatements:
     handler: src/handlers/getMonthlyStatements.handler
     events:

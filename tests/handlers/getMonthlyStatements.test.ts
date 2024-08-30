@@ -43,8 +43,6 @@ describe('getMonthlyStatementsHandler', () => {
     const event = {
       pathParameters: {
         accountId: '123456',
-      },
-      queryStringParameters: {
         year: '2024',
         month: '8',
       },
@@ -64,15 +62,12 @@ describe('getMonthlyStatementsHandler', () => {
     const event = {
       pathParameters: {
         accountId: 'nonexistent',
-      },
-      queryStringParameters: {
         year: '2024',
         month: '8',
       },
     } as unknown as APIGatewayProxyEvent
 
     const result: APIGatewayProxyResult = await handler(event)
-    console.log({result})
     expect(result.statusCode).toBe(404)
   })
 
@@ -80,10 +75,7 @@ describe('getMonthlyStatementsHandler', () => {
     const event = {
       pathParameters: {
         accountId: '123456',
-      },
-      queryStringParameters: {
         year: '2024',
-        // month is missing
       },
     } as unknown as APIGatewayProxyEvent
 
