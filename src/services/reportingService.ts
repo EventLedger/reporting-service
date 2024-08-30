@@ -15,7 +15,7 @@ export class ReportingService {
   async processTransactionEvent(event: TransactionEvent): Promise<void> {
     const { accountId, currency, amount, type, date } = event
     const { month, year } = getMonthYearFromDate(date)
-
+    
     let statement = await this.statementModel.findOne({ accountId, month, year }).exec()
     if (!statement) {
       statement = new this.statementModel({
@@ -25,7 +25,7 @@ export class ReportingService {
         currencies: [],
       })
     }
-
+    
     let currencyStatement = statement.currencies.find(
       (cs) => cs.currency === currency,
     )
@@ -38,7 +38,7 @@ export class ReportingService {
       }
       statement.currencies.push(currencyStatement)
     }
-
+    
     const currencyStatementIndex = statement.currencies.findIndex(
       (cs) => cs.currency === currency,
     )

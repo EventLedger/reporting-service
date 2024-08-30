@@ -1,7 +1,0 @@
-{
-  "Records": [
-    {
-      "body": "{\"accountId\":\"123456\",\"currency\":\"ABC\",\"amount\":100.0,\"type\":\"INBOUND\",\"date\":\"2024-08-28T12:00:00Z\"}"
-    }
-  ]
-}

@@ -11,24 +11,59 @@ provider:
     # MONGODB_URI: ${ssm:/accounts-service/MONGODB_URI}
     # EVENT_BUS_NAME: ${ssm:/my-service/EVENT_BUS_NAME~true}
   
+  
 functions:
   transactionEventListener:
-    handler: dist/handlers/transactionEventListener.handler
+    handler: src/handlers/transactionEventListener.handler
     events:
       - eventBridge:
           eventBus: default
           pattern:
             source:
-              - accounts-service
+              - 'accounts-service'
             detail-type:
-              - TransactionCreated
+              - 'TransactionCreated'
+          # retryPolicy:
+          #   maximumRetryAttempts: 5
 
   getMonthlyStatements:
-    handler: dist/handlers/getMonthlyStatements.handler
+    handler: src/handlers/getMonthlyStatements.handler
     events:
       - http:
           path: statements/{accountId}/{year}/{month}
           method: get
+  
+resources:
+  Resources:
+    TransactionEventListenerLambdaPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName:
+          Fn::GetAtt:
+            - TransactionEventListenerLambdaFunction
+            - Arn
+        Principal: events.amazonaws.com
+        SourceArn:
+          Fn::GetAtt:
+            - TransactionEventListenerEventRule
+            - Arn
+
+    TransactionEventListenerEventRule:
+      Type: AWS::Events::Rule
+      Properties:
+        EventBusName: default
+        EventPattern:
+          source:
+            - 'accounts-service'
+          detail-type:
+            - 'TransactionCreated'
+        Targets:
+          - Arn:
+              Fn::GetAtt:
+                - TransactionEventListenerLambdaFunction
+                - Arn
+            Id: "TransactionEventListenerTarget"
 
 package:
   individually: true
@@ -53,7 +88,6 @@ build:
     target: "node20"
     platform: "node"
     exclude: 
-      # - "jest"
-      # - "mongodb-memory-server"
+      - "jest"
+      - "mongodb-memory-server"
       - "prettier"
-    buildConcurrency: 3

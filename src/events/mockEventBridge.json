@@ -1,0 +1,18 @@
+{
+  "version": "0",
+  "id": "c0cfc740-a244-f569-5a34-e7784dc1f12c",
+  "detail-type": "TransactionCreated",
+  "source": "accounts-service",
+  "accountId": "123456789012",
+  "time": "2024-08-29T07:35:00Z",
+  "date": "2024-08-29T07:35:00Z",
+  "region": "eu-north-1",
+  "resources": [],
+  "detail": {
+    "accountId": "66cbccb349f8791ba0cc98b8",
+    "type": "INBOUND",
+    "currency": "USD",
+    "amount": 909,
+    "date": "2024-08-29T07:35:00Z"
+  }
+}
