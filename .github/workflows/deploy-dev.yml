@@ -52,10 +52,4 @@ jobs:
         run: npm ci
 
       - name: Deploy
-        run: |
-          serverless deploy \
-          --param="MONGODB_URI=${{ secrets.MONGODB_URI_DEV }}" \
-          --param="EVENT_BUS_NAME=${{ secrets.EVENT_BUS_DEV }}" \
-          --param="EVENT_SOURCE=${{ secrets.EVENT_SOURCE }}" \
-          --param="EVENT_DETAIL_TYPE=${{ secrets.EVENT_DETAIL_TYPE }}" \
-          --param="AWS_REGION=${{ secrets.AWS_REGION }}"
+        run: npm run deploy
