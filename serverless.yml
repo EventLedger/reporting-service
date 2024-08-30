@@ -57,7 +57,9 @@ resources:
           source:
             - 'accounts-service'
           detail-type:
-            - 'TransactionCreated'
+              - 'TransactionCreated'
+              - 'AccountCreated'
+              - 'AccountUpdated'
         Targets:
           - Arn:
               Fn::GetAtt:

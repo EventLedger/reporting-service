@@ -64,7 +64,6 @@ describe('ReportingService', () => {
           {
             currency: 'USD',
             transactions: [],
-            openingBalance: 0,
             closingBalance: 50,
           },
         ],
@@ -103,7 +102,6 @@ describe('ReportingService', () => {
           {
             currency: 'EUR',
             transactions: [],
-            openingBalance: 0,
             closingBalance: 0,
           },
         ],
@@ -181,13 +179,11 @@ describe('ReportingService', () => {
           {
             currency: 'USD',
             transactions: [],
-            openingBalance: 0,
             closingBalance: 1000,
           },
           {
             currency: 'EUR',
             transactions: [],
-            openingBalance: 0,
             closingBalance: 2000,
           },
         ],

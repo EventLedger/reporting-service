@@ -33,7 +33,6 @@ describe('getMonthlyStatementsHandler', () => {
         {
           currency: 'USD',
           transactions: [],
-          openingBalance: 0,
           closingBalance: 100,
         },
       ],

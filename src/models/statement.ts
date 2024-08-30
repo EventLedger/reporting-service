@@ -9,7 +9,6 @@ export interface ICurrencyStatement {
     amount: number
     date: Date
   }[]
-  openingBalance: number
   closingBalance: number
 }
 
@@ -33,7 +32,6 @@ const CurrencyStatementSchema = new Schema<ICurrencyStatement>({
       date: { type: Date, required: true },
     },
   ],
-  openingBalance: { type: Number, required: true },
   closingBalance: { type: Number, required: true },
 })
 

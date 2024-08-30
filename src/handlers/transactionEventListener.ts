@@ -13,7 +13,7 @@ export const handler = async (event: EventBridgeEvent): Promise<void> => {
   const reportingService = new ReportingService(Statement)
   const eventBridgeEvent = JSON.stringify(event, null, 2)
   const eventDetails = JSON.parse(eventBridgeEvent)['detail']
-  
+  console.log({eventDetails})
   try {
     if (event['detail-type'] === Events.TransactionCreated) {
       await reportingService.processTransactionEvent(eventDetails)

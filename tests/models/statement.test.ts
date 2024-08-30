@@ -31,7 +31,6 @@ describe('Statement Model Test', () => {
               date: new Date('2024-08-28T12:00:00Z'),
             },
           ],
-          openingBalance: 0,
           closingBalance: 100,
         },
       ],
@@ -71,7 +70,6 @@ describe('Statement Model Test', () => {
         {
           currency: 'USD',
           transactions: [],
-          openingBalance: 0,
           closingBalance: 0,
         },
       ],
@@ -81,7 +79,6 @@ describe('Statement Model Test', () => {
     statement.currencies.push({
       currency: 'EUR',
       transactions: [],
-      openingBalance: 0,
       closingBalance: 0,
     })
     const updatedStatement = await statement.save()
@@ -105,7 +102,6 @@ describe('Statement Model Test', () => {
               date: new Date('2024-08-28T12:00:00Z'),
             },
           ],
-          openingBalance: 0,
           closingBalance: 100,
         },
       ],

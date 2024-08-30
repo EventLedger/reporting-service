@@ -36,19 +36,19 @@ export class ReportingService {
   async processAccountEvent(event: AccountEvent): Promise<void> {
     const { id: accountId, currencies, balances, date } = event
     const { month, year } = getMonthYearFromDate(date)
-  
+    
     let statement = await this.getOrCreateStatement(accountId, month, year)
-  
     currencies.forEach(currency => {
       let currencyStatement = this.getOrCreateCurrencyStatement(statement, currency)
-      currencyStatement.closingBalance = balances.get(currency) || 0
+      currencyStatement.closingBalance = balances[currency] || 0
   
       const currencyStatementIndex = statement.currencies.findIndex(
         (cs) => cs.currency === currency,
       )
+
       statement.currencies[currencyStatementIndex] = currencyStatement
     })
-  
+    console.log("GO 10")
     await statement.save()
   }
   
@@ -99,7 +99,6 @@ export class ReportingService {
       currencyStatement = {
         currency,
         transactions: [],
-        openingBalance: 0,
         closingBalance: 0,
       }
       statement.currencies.push(currencyStatement)
