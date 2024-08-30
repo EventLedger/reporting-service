@@ -9,8 +9,8 @@ export interface ICurrencyStatement {
     amount: number
     date: Date
   }[]
+  openingBalance?: number
   closingBalance: number
-  isSupported?: boolean
 }
 
 export interface IStatement extends Document {
@@ -33,8 +33,8 @@ const CurrencyStatementSchema = new Schema<ICurrencyStatement>({
       date: { type: Date, required: true },
     },
   ],
+  openingBalance: { type: Number, default: 0 },
   closingBalance: { type: Number, required: true },
-  isSupported: { type: Boolean, default: true },
 })
 
 const StatementSchema = new Schema<IStatement>({
