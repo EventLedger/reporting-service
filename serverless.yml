@@ -5,25 +5,21 @@ service: reporting-service
 provider:
   name: aws
   runtime: nodejs20.x
-  region: ${param:AWS_REGION}
+  region: ${env:AWS_ACCOUNT_REGION}
   environment:
-    MONGODB_URI: ${param:MONGODB_URI}
-    EVENT_BUS_NAME: ${param:EVENT_BUS_NAME}
-    AWS_REGION: ${param:AWS_REGION}
-    EVENT_SOURCE: ${param:EVENT_SOURCE}
-    EVENT_DETAIL_TYPE: ${param.EVENT_DETAIL_TYPE}
+    MONGODB_URI: ${env:MONGODB_URI}
   
 functions:
   transactionEventListener:
     handler: src/handlers/transactionEventListener.handler
     events:
       - eventBridge:
-          eventBus: ${param:EVENT_BUS_NAME}
+          eventBus: ${env:EVENT_BUS_NAME}
           pattern:
             source:
-              - ${param:EVENT_SOURCE}
+              - ${env:EVENT_SOURCE}
             detail-type:
-              - ${param:EVENT_DETAIL_TYPE}
+              - ${env:EVENT_DETAIL_TYPE}
   
   getMonthlyStatements:
     handler: src/handlers/getMonthlyStatements.handler
@@ -51,12 +47,12 @@ resources:
     TransactionEventListenerEventRule:
       Type: AWS::Events::Rule
       Properties:
-        EventBusName: ${param:EVENT_BUS_NAME}
+        EventBusName: ${env:EVENT_BUS_NAME}
         EventPattern:
           source:
-            - ${param:EVENT_SOURCE}
+            - ${env:EVENT_SOURCE}
           detail-type:
-              - ${param:EVENT_DETAIL_TYPE}
+              - ${env:EVENT_DETAIL_TYPE}
         Targets:
           - Arn:
               Fn::GetAtt:

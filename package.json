@@ -14,7 +14,7 @@
     "@types/node": "^22.5.0",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
-    "eslint": "^9.9.1",
+    "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "mongodb-memory-server": "^10.0.0",
@@ -29,9 +29,10 @@
     "build": "npm run clean && tsc",
     "deploy": "serverless deploy -s production -r eu-north-1 -v",
     "offline": "npm run build && serverless offline",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "test": "jest"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check  .",
+    "test": "jest ."
   }
 }

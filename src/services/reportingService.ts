@@ -1,9 +1,6 @@
 import { Model } from 'mongoose'
 import { IStatement } from '../models/statement'
-import {
-  TransactionEvent,
-  TransactionType,
-} from '../events/transactionEvent'
+import { TransactionEvent, TransactionType } from '../events/transactionEvent'
 import { getMonthYearFromDate } from '../utils/dateUtils'
 import { NotFoundException } from '../utils/exceptions'
 
@@ -18,21 +15,21 @@ export class ReportingService {
     const { accountId, currency, amount, type, date } = event
     const { month, year } = getMonthYearFromDate(date)
 
-    let statement = await this.getOrCreateStatement(accountId, month, year)
-    let currencyStatement = this.getOrCreateCurrencyStatement(
+    const statement = await this.getOrCreateStatement(accountId, month, year)
+    const currencyStatement = this.getOrCreateCurrencyStatement(
       statement,
       currency,
     )
-    
+
     const currencyStatementIndex = statement.currencies.findIndex(
       (cs) => cs.currency === currency,
     )
     this.updateCurrencyStatement(currencyStatement, amount, type, date)
     statement.currencies[currencyStatementIndex] = currencyStatement
-    
+
     await statement.save()
   }
-  
+
   async getMonthlyStatements(
     accountId: string,
     year: number,
