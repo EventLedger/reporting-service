@@ -1,6 +1,6 @@
 import { Schema, Document, model, Model } from 'mongoose'
 
-import { TransactionType } from '../events/events'
+import { TransactionType } from '../events/transactionEvent'
 
 export interface ICurrencyStatement {
   currency: string
@@ -10,6 +10,7 @@ export interface ICurrencyStatement {
     date: Date
   }[]
   closingBalance: number
+  isSupported?: boolean
 }
 
 export interface IStatement extends Document {
@@ -33,6 +34,7 @@ const CurrencyStatementSchema = new Schema<ICurrencyStatement>({
     },
   ],
   closingBalance: { type: Number, required: true },
+  isSupported: { type: Boolean, default: true },
 })
 
 const StatementSchema = new Schema<IStatement>({

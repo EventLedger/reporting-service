@@ -23,8 +23,6 @@ functions:
               - 'accounts-service'
             detail-type:
               - 'TransactionCreated'
-              - 'AccountCreated'
-              - 'AccountUpdated'
   
   getMonthlyStatements:
     handler: src/handlers/getMonthlyStatements.handler
@@ -58,8 +56,6 @@ resources:
             - 'accounts-service'
           detail-type:
               - 'TransactionCreated'
-              - 'AccountCreated'
-              - 'AccountUpdated'
         Targets:
           - Arn:
               Fn::GetAtt:
