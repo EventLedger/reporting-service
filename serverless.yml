@@ -10,6 +10,8 @@ provider:
     MONGODB_URI: ${param:MONGODB_URI}
     EVENT_BUS_NAME: ${param:EVENT_BUS_NAME}
     AWS_REGION: ${param:AWS_REGION}
+    EVENT_SOURCE: ${param:EVENT_SOURCE}
+    EVENT_DETAIL_TYPE: ${param.EVENT_DETAIL_TYPE}
   
 functions:
   transactionEventListener:
